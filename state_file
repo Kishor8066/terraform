@@ -1,0 +1,14 @@
+Terraform stores the state of the infrastructure that is being created from the TF files. This state allows terraform to map real world resource to your existing configuration.
+
+terraform.tfstate : this file keeps the current state of terraform resources. When you create or destroy a resource, terraform save it in it's state file. 
+
+Whenever you create a resource, Terraform also stores the information associated with this resource in the file called tfvar state file. 
+
+
+For example, we created, two resource via terraform, one is EC2 and Other is a Github repository. Terraform will keep the record in terraform state file. 
+
+
+If we delete a resource, the entry for that resource in state file is also deleted. So after destroy if you run the "terraform apply" again, then terraform will check the tfstate file  and find out that only it need to create EC2 file only.
+
+
+If you deleted the terraform tfstate file and also if you delete the backup file then terraform will not know what was the previous creation and deletion. in that case, terraform will create all the resource again.
