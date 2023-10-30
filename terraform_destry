@@ -1,0 +1,10 @@
+Terraform destroy
+
+Approach 1 : if we run "terraform destroy", it will destroy all the resources that are mention in the .tf file.
+
+Approach 2 : you can mention what target you want to destroy. In the below example, terraform will only destroy the aws instance name as myec2.  The dot(.) is the separator .
+
+terraform destroy -target resource_type.resource_name
+
+
+terraform destroy -target aws_instance.myec2
