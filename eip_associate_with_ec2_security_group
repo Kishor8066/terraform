@@ -1,0 +1,28 @@
+# Here we will create a EIP and allocate the EIP into the EC2, and then allow that IP in a Security Group.
+provider "aws" { 
+  region     = "us-east-1" 
+} 
+# It will create the ec2 instance name myec2 
+resource "aws_instance" "myec2" { 
+    ami = "ami-026b57f3c383c2eec" 
+    instance_type = "t2.micro" 
+} 
+# It will create the Elastic IP address, EIP is static IP which won't change. name of the eip will be lb.
+resource "aws_eip" "lb" { 
+  vpc      = true 
+} 
+# It will allocate the Elastic IP to the EC2 instance. you need to specify instance_id and allocation_id.
+resource "aws_eip_association" "eip_assoc" { 
+  instance_id   = aws_instance.myec2.id 
+  allocation_id = aws_eip.lb.id 
+} 
+# It will create a security group name "Kishor-Security-Group and allowed the Elastic IP in Ingress rule in port 443" 
+resource "aws_security_group" "allow_tls" { 
+  name        = "Kishor-Security-Group" 
+  ingress { 
+    from_port        = 443 
+    to_port          = 443 
+    protocol         = "tcp" 
+    cidr_blocks      = ["${aws_eip.lb.public_ip}/32"] 
+   } 
+}
